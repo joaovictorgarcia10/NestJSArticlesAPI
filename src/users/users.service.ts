@@ -3,6 +3,8 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
+import { UpdateUserDto } from './dto/update-user.dto';
+
 
 import * as bcrypt from 'bcrypt';
 
@@ -24,7 +26,25 @@ export class UsersService {
     };
   }
 
-  findByEmail(email: string): Promise<User> {
+  async findByEmail(email: string): Promise<User> {
     return this.prisma.user.findUnique({ where: { email } });
+  }
+
+
+
+  async findOne(id: number): Promise<User> {
+    return this.prisma.user.findUnique({ where: { id } });
+  }
+
+
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    return this.prisma.user.update({
+      where: { id },
+      data: updateUserDto,
+    });
+  }
+
+  async remove(id: number): Promise<User> {
+    return this.prisma.user.delete({ where: { id } });
   }
 }
