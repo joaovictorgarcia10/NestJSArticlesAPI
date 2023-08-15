@@ -8,32 +8,32 @@ import { Article } from '@prisma/client';
 export class ArticlesService {
   constructor(private readonly prisma: PrismaService) { }
 
-  async create(authorId: number, createArticleDto: CreateArticleDto): Promise<Article> {
+  async create(userId: number, createArticleDto: CreateArticleDto): Promise<Article> {
     const data = {
       ...createArticleDto,
-      authorId: authorId,
+      authorId: userId,
     }
 
     return this.prisma.article.create({ data: data });
   }
 
-  async findDrafts(): Promise<Article[]> {
+  async getAll(userId: number): Promise<Article[]> {
     return this.prisma.article.findMany({
-      where: { published: false },
+      where: { published: true , authorId: userId},
       include: { author: true },
     });
   }
 
-  async findAll(): Promise<Article[]> {
+  async getAllDrafts(userId: number): Promise<Article[]> {
     return this.prisma.article.findMany({
-      where: { published: true },
+      where: { published: false, authorId: userId },
       include: { author: true },
     });
   }
 
-  findOne(id: number): Promise<Article> {
+  getOne(userId: number, id: number): Promise<Article> {
     return this.prisma.article.findUnique({
-      where: { id },
+      where: {  id, authorId: userId },
       include: { author: true },
     });
   }

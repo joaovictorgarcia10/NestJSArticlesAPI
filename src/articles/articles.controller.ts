@@ -11,48 +11,50 @@ import {
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
-import { Article } from './entities/article.entity';
 
 @Controller('articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) { }
 
-  @Post(':authorId')
+  @Post('create/:userId')
   async create(
-    @Param('authorId', ParseIntPipe) authorId: number,
+    @Param('authorId', ParseIntPipe) userId: number,
     @Body() createArticleDto: CreateArticleDto,
   ) {
-    return await this.articlesService.create(authorId, createArticleDto);
+    return await this.articlesService.create(userId, createArticleDto);
   }
 
-  @Get()
-  async findAll() {
-    const articles = await this.articlesService.findAll();
+  @Get('get-all/:userId')
+  async getAll(@Param('userId', ParseIntPipe) userId: number) {
+    const articles = await this.articlesService.getAll(userId);
     return articles.map((article) => article);
   }
 
-  @Get('drafts')
-  async findDrafts() {
-    const drafts = await this.articlesService.findDrafts();
+  @Get('get-all-drafts/:userId')
+  async getAllDrafts(@Param('userId', ParseIntPipe) userId: number) {
+    const drafts = await this.articlesService.getAllDrafts(userId);
     return drafts.map((draft) => draft);
   }
 
-  @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number) {
-    return await this.articlesService.findOne(id);
+  @Get('get-one/:userId/:articleId')
+  async getOne(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('articleId', ParseIntPipe) articleId: number,
+  ) {
+    return await this.articlesService.getOne(userId, articleId);
   }
 
-  @Patch(':id')
+  @Patch('update/:articleId')
   async update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('articleId', ParseIntPipe) articleId: number,
     @Body() updateArticleDto: UpdateArticleDto,
   ) {
-    return await this.articlesService.update(id, updateArticleDto);
+    return await this.articlesService.update(articleId, updateArticleDto);
   }
 
-  @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number) {
-    return await this.articlesService.remove(id);
+  @Delete('delete/:articleId')
+  async remove(@Param('articleId', ParseIntPipe) articleId: number) {
+    return await this.articlesService.remove(articleId);
   }
 }
 

@@ -15,12 +15,6 @@ export class UsersController {
     return await this.userService.create(createUserDto);
   }
 
-  @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number) {
-    return await this.userService.findOne(id);
-  }
-
-
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
