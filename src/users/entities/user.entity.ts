@@ -1,8 +1,22 @@
+import { ApiProperty } from "@nestjs/swagger";
+import { Exclude } from "class-transformer";
+
 export class User {
-    id?: number;
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-    email: string;
-    password: string;
-  }
+  @ApiProperty()
+  id?: number;
+
+  @ApiProperty()
+  createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
+
+  @ApiProperty()
+  name: string;
+
+  @ApiProperty()
+  email: string;
+
+  @Exclude()
+  password: string;
+}

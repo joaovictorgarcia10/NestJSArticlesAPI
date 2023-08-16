@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../entities/user.entity';
 import {
   IsEmail,
@@ -9,6 +10,7 @@ import {
 
 export class CreateUserDto extends User {
   @IsEmail()
+  @ApiProperty()
   email: string;
 
   @IsString()
@@ -17,8 +19,10 @@ export class CreateUserDto extends User {
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
     message: 'password too weak',
   })
+  @ApiProperty()
   password: string;
 
   @IsString()
+  @ApiProperty()
   name: string;
 }
